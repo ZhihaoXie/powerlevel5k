@@ -255,9 +255,15 @@ _prompt_left ()
   # Add spaces for special chars
   let ps1l_cnt+=1
 
-  PS1L="╭─${PS_Gray}${PS_White}${PS_On_Gray}$folder_type_icon${PS_White}${PS_On_Gray} \
+  if [ -z $CONDA_DEFAULT_ENV ];then
+    PS1L="╭─${PS_Gray}${PS_White}${PS_On_Gray}$folder_type_icon${PS_White}${PS_On_Gray} \
 $ps1_header ${PS_Gray}${PS_On_Blue}${PS_White}\
 ${PS_On_Blue}${PWD_HOME}${git_prompt_info}${PS_Color_Off}"
+  else
+    PS1L="╭─${PS_Gray}${PS_White}${PS_On_Gray}($CONDA_DEFAULT_ENV)$folder_type_icon${PS_White}${PS_On_Gray} \
+$ps1_header ${PS_Gray}${PS_On_Blue}${PS_White}\
+${PS_On_Blue}${PWD_HOME}${git_prompt_info}${PS_Color_Off}"
+  fi
 
   unset folder_type_icon ps1_header git_prompt_info
 }
@@ -283,7 +289,11 @@ _prompt ()
   _last_exit_status
   _prompt_left
   _prompt_right
-  indent=$(($COLUMNS-${ps1r_cnt}-${ps1l_cnt}))
+  if [ -z $CONDA_DEFAULT_ENV ];then
+    indent=$(($COLUMNS-${ps1r_cnt}-${ps1l_cnt}))
+  else
+    indent=$(($COLUMNS-${ps1r_cnt}-${ps1l_cnt}-${#CONDA_DEFAULT_ENV}-2))
+  fi
   indent_spaces="$(printf '%0.s ' $(seq 1 $indent))"
   PS1=$(printf "%s${indent_spaces}%s\n╰ " "$PS1L" "$PS1R")
   unset ps1l_cnt

@@ -74,3 +74,8 @@ dropbox_icon=""
 home_folder_icon=""
 os_icon=""    # Choose from: , , , , , , , , , 
 ```
+
+Modify log
+---
+
+@2023.07.18: add $CONDA_DEFAULT_ENV on PS1
